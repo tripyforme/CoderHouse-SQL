@@ -1,0 +1,21 @@
+-- Creación de Vistas
+
+/* Listado de canciones de la decada del 10' */
+CREATE VIEW songs_10s
+AS (SELECT * FROM canciones WHERE anio_publicacion BETWEEN 2010 AND 2019);
+
+/* Duración de las canciones ordenadas desde la más larga a la más corta*/
+CREATE VIEW largest_canciones
+AS (SELECT * FROM canciones ORDER BY duracion DESC);
+
+/* Albumes recientes, listado de albumes ordenados por año de publicación*/
+CREATE VIEW new_albums
+AS (SELECT * FROM albumes ORDER BY anio_publicacion);
+
+/* Listado de discograficas australianas*/
+CREATE VIEW discograficas_australianas
+AS (SELECT * FROM discograficas WHERE nacionalidad = "Australiana");
+
+/* Listado de discograficas fundadas en la decada del 70' */
+CREATE VIEW discograficas_70s
+AS (SELECT * FROM discograficas WHERE anio_inicio BETWEEN 1970 AND 1979);
