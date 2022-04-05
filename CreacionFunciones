@@ -1,0 +1,49 @@
+-- Creacion de funciones
+
+delimiter #
+
+CREATE FUNCTION Q_ALBUM_X_ARTIST (PARAM_SONG INT)
+RETURNS INT
+DETERMINISTIC
+BEGIN
+	DECLARE ALBUMES_X_ARTISTA INT;
+    
+    SELECT COUNT(id_album) INTO ALBUMES_X_ARTISTA
+    FROM albumes
+    WHERE id_artista = PARAM_SONG AND id_genero = 1;
+    
+    RETURN ALBUMES_X_ARTISTA;
+END#
+
+delimiter ;
+
+-- Uso de la función para saber cuantos albumes del genero rock psicodelico tiene determinado artista.
+
+SELECT nombre, Q_ALBUM_X_ARTIST(1) AS 'Albumes de Psyrock'
+FROM artistas;
+
+delimiter #
+
+CREATE FUNCTION Canciones_largas (song INT)
+RETURNS VARCHAR(30)
+NO SQL
+BEGIN
+	DECLARE duracionsong TIME;
+    
+    SELECT duracion INTO duracionsong
+    FROM canciones
+    WHERE id_cancion = song;
+    
+    IF duracionsong > "00:05:00" THEN
+    RETURN 'LARGA';
+    ELSE
+    RETURN 'CORTA';
+    END IF;
+    
+END#
+
+delimiter ;
+
+-- Query para saber si una canción es demasiado larga. (más de 5 min)
+
+SELECT Canciones_largas (1);
