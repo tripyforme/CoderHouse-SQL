@@ -1,0 +1,27 @@
+-- CREACIÓN DE USUARIOS
+
+-- Usuario1 Permisos solo de lectura sobre todas las tablas. No puede eliminar registros de ninguna tabla.
+
+-- 1) Se crea el usuario y su contraseña, por defecto no cuenta con ningun permiso
+
+CREATE USER 'Usuario1'@'localhost' IDENTIFIED BY 'Password1';
+
+-- 2) Con la sentencia GRANT se le otorga persmisos al usuario1 y especificamos la sentencia SELECT para que sean solo permisos de vista,
+-- sobre la base de datos 'setlist'
+
+GRANT SELECT ON setlist.* TO 'Usuario1'@'localhost';
+
+-- Usuario2 Permisos de Lectura, Insersión y Modificación de datos. NO puede eliminar registros de ninguna tabla.
+
+-- 1) Igual que el punto anterior, creamos un usuario nuevo con su contraseña:
+
+CREATE USER 'Usuario2'@'localhost' IDENTIFIED BY 'Password2';
+
+-- 2) Usamos la sentencia GRANT para otorgarle permisos y vamos a especificar cuales
+
+GRANT SELECT, INSERT, UPDATE ON setlist.* TO 'Usuario2'@'localhost';
+
+-- Sentencias para verificar sus permisos:
+
+SHOW GRANTS FOR 'Usuario1'@'localhost';
+SHOW GRANTS FOR 'Usuario2'@'localhost';
