@@ -1,0 +1,16 @@
+-- Trigger para evitar que se llene mal un campo
+
+DELIMITER $$
+CREATE TRIGGER nombre_defecto
+BEFORE INSERT ON canciones
+FOR EACH ROW
+BEGIN
+	IF new.anio_publicacion >YEAR(curdate()) THEN
+		signal sqlstate '45000' SET MESSAGE_TEXT = 'El año debe ser de 2022 hacia atras';
+	END IF;
+END $$
+DELIMITER ;
+
+-- Ejemplo de prueba:
+
+INSERT INTO canciones VALUES (NULL,1,1,2023,'00:05:21','Crying Lightning');
