@@ -1,0 +1,40 @@
+-- Creación de Stored Procedure:
+
+DELIMITER //
+
+CREATE PROCEDURE `SP_Canciones_Ordenadas` (IN nombre CHAR(50), orden INT)
+BEGIN
+
+	IF nombre <> '' AND orden = 2 THEN
+		SET @ordena = concat('ORDER BY ',nombre,' DESC');
+	ELSEIF nombre <> '' AND orden = 1 THEN
+		SET @ordena = concat('ORDER BY ',nombre,' ASC');
+	ELSE 
+		SET @ordena = '';
+	END IF;
+
+	SET @clausula = concat('SELECT * FROM canciones ', @ordena);
+    
+    PREPARE ejecutarSQL FROM @clausula;
+    EXECUTE ejecutarSQL;
+    DEALLOCATE PREPARE ejecutarSQL;
+    
+END //
+
+DELIMITER ;
+
+-- Query para su utilización: en el segundo parametro: 1 para orden ascendente, 2 para orden descendente
+
+CALL SP_Canciones_Ordenadas('id_cancion',2);
+
+DELIMITER //
+
+CREATE PROCEDURE `insertar_genero` (IN genero VARCHAR(50))
+BEGIN
+	SET @genre = genero;
+    INSERT INTO generos VALUES (NULL,@genre);
+END//
+
+DELIMITER ;
+-- Query para su utilizacion: Para insertar nuevo genero:
+CALL insertar_genero ('Cuarteto');
