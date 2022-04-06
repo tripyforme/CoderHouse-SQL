@@ -1,0 +1,477 @@
+create database setlist;
+use setlist;
+
+CREATE TABLE usuarios(
+id_user INT PRIMARY KEY AUTO_INCREMENT,
+nombre VARCHAR(30) NOT NULL,
+apellido VARCHAR(30),
+anio_nacimiento YEAR
+);
+
+INSERT INTO usuarios VALUES
+(NULL, 'Mauro', 'Reta', 1994),
+(NULL, 'Matias', 'Castellanos', 2003),
+(NULL, 'Gabriel', 'Rios', 1997),
+(NULL, 'Evelin', 'Moyano', 1994),
+(NULL, 'Noelia', 'Bibbo', 1983);
+    
+CREATE TABLE ciudades(
+id_ciudad INT PRIMARY KEY AUTO_INCREMENT,
+provincia VARCHAR(30) NOT NULL,
+pais VARCHAR(30) NOT NULL
+);
+
+INSERT INTO ciudades VALUES
+	(NULL, 'Buenos Aires', 'Argentina'),
+    (NULL, 'Perth', 'Australia'),
+    (NULL, 'London', 'Londres'),
+    (NULL, 'New York', 'Estados Unidos'),
+	(NULL, 'Barcelona', 'Spain'),
+    (NULL, 'Chiba', 'Japon');
+    
+CREATE TABLE generos(
+id_genero INT PRIMARY KEY AUTO_INCREMENT,
+nombre VARCHAR(30) NOT NULL
+);
+
+INSERT INTO generos VALUES 
+	(NULL, 'Rock Psicodélico'),
+	(NULL, 'Rock'),
+    (NULL, 'Pop'),
+    (NULL, 'Synth Pop'),
+	(NULL, 'Pop Punk'),
+    (NULL, 'Rock Alternativo'),
+    (NULL, 'New Wave');
+    
+CREATE TABLE discograficas(
+id_discografica INT PRIMARY KEY AUTO_INCREMENT,
+nombre VARCHAR(30) NOT NULL,
+anio_inicio YEAR,
+nacionalidad VARCHAR(30)
+);
+
+INSERT INTO discograficas VALUES 
+	(NULL, 'Modular Recordings', 1998, 'Australiana'),
+	(NULL, 'Fiction Records', 1978, 'Britanica'),
+	(NULL, 'Island Records', 1959, 'Britanica'),
+    (NULL, 'Fueled By Ramen', 1996, 'Estadounidense'),
+    (NULL, 'Moustache Music', 2010, 'Argentina'),
+    (NULL, 'Pelo Music', 2003, 'Argentina');
+
+CREATE TABLE artistas(
+id_artista INT PRIMARY KEY AUTO_INCREMENT,
+nombre VARCHAR(30) NOT NULL,
+anio_inicio YEAR,
+pais_origen VARCHAR(30) NOT NULL
+);
+
+INSERT INTO artistas VALUES 
+(NULL, 'Tame Impala', 2007, 'Australia'),
+(NULL, 'Paramore', 2010, 'Estadounidense'),
+(NULL, 'Marilina Bertoldi', 2014, 'Argentina');
+
+-- con claves foráneas
+
+CREATE TABLE albumes(
+id_album INT PRIMARY KEY AUTO_INCREMENT,
+id_genero INT,
+id_discografica INT,
+id_artista INT,
+nombre VARCHAR(50) NOT NULL,
+anio_publicacion YEAR,
+duracion TIME,
+FOREIGN KEY fk_id_genero(id_genero) REFERENCES generos(id_genero),
+FOREIGN KEY fk_id_discografica(id_discografica) REFERENCES discograficas(id_discografica),
+FOREIGN KEY fk_id_artista(id_artista) REFERENCES artistas(id_artista)
+);
+
+INSERT INTO albumes VALUES 
+	(NULL, 1, 1, 1, 'Innerspeaker', 2010, '00:53:17'),
+	(NULL, 1, 1, 1, 'Lonerism', 2012, '00:51:53'),
+	(NULL, 4, 2, 1, 'Currents', 2015, '00:51:06'),
+    (NULL, 4, 3, 1, 'The Slow Rush', 2020, '00:57:15'),
+	(NULL, 6, 5, 3, 'la presencia de las personas que se van', 2014, '00:26:03'),
+    (NULL, 2, 6, 3, 'sexo con modelos', 2016, '00:33:33'),
+    (NULL, 6, 6, 3, 'prender un fuego', 2018, '00:36:58'),
+    (NULL, 2, 6, 3, 'mojigata', 2022, '00:26:00'),
+    (NULL, 2, 4, 2, 'all we know is falling', 2005, '00:35:51'),
+    (NULL, 5, 4, 2, 'riot', 2007, '00:50:26'),
+    (NULL, 6, 4, 2, 'brand new eyes', 2009, '00:40:13'),
+    (NULL, 5, 4, 2, 'paramore', 2013, '01:03:00'),
+    (NULL, 7, 4, 2, 'after laughter', 2017, '00:42:38');
+    
+CREATE TABLE canciones(
+id_cancion INT PRIMARY KEY AUTO_INCREMENT,
+id_album INT,
+id_genero INT,
+anio_publicacion YEAR,
+duracion TIME,
+nombre VARCHAR(60) NOT NULL,
+FOREIGN KEY fk_id_album(id_album) REFERENCES albumes(id_album),
+FOREIGN KEY fk_id_genero(id_genero) REFERENCES generos(id_genero)
+);
+
+INSERT INTO canciones VALUES
+	(NULL,1,1,2010,'00:05:21','It Is Not Meant To Be'),
+	(NULL,1,1,2010,'00:04:26','Desire Be Desire Go'),
+	(NULL,1,1,2010,'00:04:47','Alter Ego'),
+	(NULL,1,1,2010,'00:04:31','Lucidity'),
+	(NULL,1,1,2010,'00:03:19','Wont You Make Up Your Mind'),
+	(NULL,1,1,2010,'00:03:55','Solitude Is Bliss'),
+	(NULL,1,1,2010,'00:05:28','Jeremys Storm'),
+	(NULL,1,1,2010,'00:06:02','Expectation'),
+	(NULL,1,1,2010,'00:04:25','The Bold Arrow Of Time'),
+	(NULL,1,1,2010,'00:07:15','Runway Houses City Clouds'),
+	(NULL,1,1,2010,'00:03:47','I Dont Really Mind'),
+	(NULL,2,1,2012,'00:03:21','Be Above It'),
+	(NULL,2,1,2012,'00:03:06','Endors Toi'),
+	(NULL,2,1,2012,'00:05:56','Apocalypse Dreams'),
+	(NULL,2,1,2012,'00:04:31','Mind Mischief'),
+	(NULL,2,1,2012,'00:05:12','Why Wont They Talk To Me'),
+	(NULL,2,1,2012,'00:04:46','Feels Like Only We Go Backwards'),
+	(NULL,2,1,2012,'00:05:53','Keep On Lying'),
+	(NULL,2,1,2012,'00:03:31','Elephant'),
+	(NULL,2,1,2012,'00:00:57','She Just Wont Believe Me'),
+	(NULL,2,1,2012,'00:05:59','NTHHSFHBAWCC'),
+	(NULL,2,1,2012,'00:05:20','Suns Coming Up'),
+	(NULL,3,4,2015,'00:07:47','Let It Happen'),
+	(NULL,3,4,2015,'00:01:47','Nangs'),
+	(NULL,3,4,2015,'00:04:15','The Moment'),
+	(NULL,3,4,2015,'00:04:30','Yes Im Changing'),
+	(NULL,3,4,2015,'00:05:18','Eventually'),
+	(NULL,3,4,2015,'00:00:55','Gossip'),
+	(NULL,3,4,2015,'00:03:36','he Less I Know The Better'),
+	(NULL,3,4,2015,'00:03:48','Past Life'),
+	(NULL,3,4,2015,'00:01:48','Disciples'),
+	(NULL,3,4,2015,'00:04:01','Cause Im A Man'),
+	(NULL,3,4,2015,'00:04:12','Reality In Motion'),
+	(NULL,3,4,2015,'00:03:05','Love Paranoia'),
+	(NULL,3,4,2015,'00:06:03','New Person Same Old Mistakes'),
+	(NULL,4,4,2020,'00:05:24','One More Year'),
+	(NULL,4,4,2020,'00:03:14','Instant Destiny'),
+	(NULL,4,4,2020,'00:03:57','Borderline'),
+	(NULL,4,4,2020,'00:06:06','Posthumous Forgiveness'),
+	(NULL,4,4,2020,'00:06:12','Breathe Deeper'),
+	(NULL,4,4,2020,'00:05:26','Tomorrows Dust'),
+	(NULL,4,4,2020,'00:05:01','On Track'),
+	(NULL,4,4,2020,'00:04:09','Lost In Yesterday'),
+	(NULL,4,4,2020,'00:03:59','Its It True'),
+	(NULL,4,4,2020,'00:04:33','It Might Be Time'),
+	(NULL,4,4,2020,'00:02:08','Glimmer'),
+	(NULL,4,4,2020,'00:07:12','One More Hour'),
+    (NULL,5,6,2014,'00:02:59','En mi'),
+    (NULL,5,6,2014,'00:04:26','Hoy lo veo'),
+    (NULL,5,6,2014,'00:03:49','Malabares'),
+    (NULL,5,6,2014,'00:02:48','Nada'),
+    (NULL,5,6,2014,'00:03:35','Puentes'),
+    (NULL,5,6,2014,'00:04:22','Presagio'),
+    (NULL,5,6,2014,'00:07:12','Incendios'),
+    (NULL,6,2,2016,'00:03:00','Cosas Dulces'),
+    (NULL,6,2,2016,'00:02:49','Sexo con modelos'),
+    (NULL,6,2,2016,'00:03:22','Rastro'),
+    (NULL,6,2,2016,'00:03:27','Enterrarte'),
+    (NULL,6,2,2016,'00:03:51','Quisiera'),
+    (NULL,6,2,2016,'00:02:51','Mdma'),
+    (NULL,6,2,2016,'00:03:11','Y deshacer'),
+    (NULL,6,2,2016,'00:03:34','Reaccionar'),
+    (NULL,6,2,2016,'00:03:45','Orbita de adios'),
+    (NULL,6,2,2016,'00:03:38','Unbreak me'),
+    (NULL,7,6,2018,'00:03:01','O no'),
+    (NULL,7,6,2018,'00:02:59','Fumar de dia'),
+    (NULL,7,6,2018,'00:03:16','La casa de a'),
+    (NULL,7,6,2018,'00:03:09','Nunca'),
+    (NULL,7,6,2018,'00:02:49','Correte'),
+    (NULL,7,6,2018,'00:03:39','China'),
+    (NULL,7,6,2018,'00:03:51','Tito volve'),
+    (NULL,7,6,2018,'00:03:16','Intervalo'),
+    (NULL,7,6,2018,'00:02:38','Techo'),
+    (NULL,7,6,2018,'00:04:21','Remis'),
+    (NULL,7,6,2018,'00:04:01','Prender un fuego'),
+    (NULL,8,2,2022,'00:00:44','Intro'),
+    (NULL,8,2,2022,'00:02:20','Es poderoso'),
+    (NULL,8,2,2022,'00:02:13','Vivo pensando en ayer'),
+    (NULL,8,2,2022,'00:02:47','La cena'),
+    (NULL,8,2,2022,'00:02:50','Cosa mia'),
+    (NULL,8,2,2022,'00:03:03','Claro ma'),
+    (NULL,8,2,2022,'00:03:46','Amuleto'),
+    (NULL,8,2,2022,'00:02:08','Sushi en lata'),
+    (NULL,8,2,2022,'00:01:33','Beso beso beso'),
+    (NULL,8,2,2022,'00:03:05','Pucho'),
+    (NULL,8,2,2022,'00:02:26','Junto boludeces'),
+    (NULL,9,2,2005,'00:03:14','All we know'),
+    (NULL,9,2,2005,'00:03:06','Pressure'),
+    (NULL,9,2,2005,'00:04:00','Emergency'),
+    (NULL,9,2,2005,'00:03:44','Brighter'),
+    (NULL,9,2,2005,'00:03:46','Here we go again'),
+    (NULL,9,2,2005,'00:03:41','Never let this go'),
+    (NULL,9,2,2005,'00:03:22','Whoa'),
+    (NULL,9,2,2005,'00:03:42','Conspiracy'),
+    (NULL,9,2,2005,'00:03:19','Franklin'),
+    (NULL,9,2,2005,'00:04:00','My heart'),
+    (NULL,10,5,2007,'00:03:48','For a pessimist, im pretty optimistic'),
+    (NULL,10,5,2007,'00:03:40','Thats what you get'),
+    (NULL,10,5,2007,'00:03:24','Hallelujah'),
+    (NULL,10,5,2007,'00:03:31','Misery business'),
+    (NULL,10,5,2007,'00:03:35','When it rains'),
+    (NULL,10,5,2007,'00:03:18','Let the flames begin'),
+    (NULL,10,5,2007,'00:03:30','Miracle'),
+    (NULL,10,5,2007,'00:03:09','Crushcrushcrush'),
+    (NULL,10,5,2007,'00:03:38','We are broken'),
+    (NULL,10,5,2007,'00:03:19','Fences'),
+    (NULL,10,5,2007,'00:04:03','Born for this'),
+    (NULL,10,5,2007,'00:03:17','Decoy'),
+    (NULL,11,6,2009,'00:03:50','Careful'),
+    (NULL,11,6,2009,'00:03:38','Ignorance'),
+    (NULL,11,6,2009,'00:03:03','Playing god'),
+    (NULL,11,6,2009,'00:04:14','Brick by boring brick'),
+    (NULL,11,6,2009,'00:04:20','Turn it off'),
+    (NULL,11,6,2009,'00:04:27','The only exception'),
+    (NULL,11,6,2009,'00:03:05','Feeling sorry'),
+    (NULL,11,6,2009,'00:03:29','Looking up'),
+    (NULL,11,6,2009,'00:03:19','Where the lines overlap'),
+    (NULL,11,6,2009,'00:03:02','Misguided ghosts'),
+    (NULL,11,6,2009,'00:03:48','All i wanted'),
+    (NULL,11,6,2009,'00:04:22','Decode'),
+    (NULL,12,5,2013,'00:03:42','Fast in my car'),
+    (NULL,12,5,2013,'00:04:10','Now'),
+    (NULL,12,5,2013,'00:03:50','Grow up'),
+    (NULL,12,5,2013,'00:04:31','Daydreaming'),
+    (NULL,12,5,2013,'00:01:30','Interlude: moving on'),
+    (NULL,12,5,2013,'00:04:56','Aint it fun'),
+    (NULL,12,5,2013,'00:04:41','Part 2'),
+    (NULL,12,5,2013,'00:05:09','Last Hope'),
+    (NULL,12,5,2013,'00:03:36','Still into you'),
+    (NULL,12,5,2013,'00:02:17','Anklebiters'),
+    (NULL,12,5,2013,'00:01:10','Interlude: holiday'),
+    (NULL,12,5,2013,'00:03:15','Proof'),
+    (NULL,12,5,2013,'00:05:09','Hate to see your heart break'),
+    (NULL,12,5,2013,'00:03:32','(one of those) crazy girls'),
+    (NULL,12,5,2013,'00:00:53','Interlude: im not angry anymore'),
+    (NULL,12,5,2013,'00:03:40','Be alone'),
+    (NULL,12,5,2013,'00:07:52','Future'),
+    (NULL,13,7,2017,'00:03:02','Hard times'),
+    (NULL,13,7,2017,'00:03:32','Rose-colored boy'),
+    (NULL,13,7,2017,'00:03:08','Told you so'),
+    (NULL,13,7,2017,'00:03:39','Forgiveness'),
+    (NULL,13,7,2017,'00:03:55','Fake happy'),
+    (NULL,13,7,2017,'00:03:41','26'),
+    (NULL,13,7,2017,'00:03:52','Pool'),
+    (NULL,13,7,2017,'00:03:07','Grudges'),
+    (NULL,13,7,2017,'00:03:34','Caught in the middle'),
+    (NULL,13,7,2017,'00:03:18','Idle worship'),
+    (NULL,13,7,2017,'00:03:23','No friend'),
+    (NULL,13,7,2017,'00:04:20','Tell me how');
+    
+CREATE TABLE lugares(
+id_lugar INT PRIMARY KEY AUTO_INCREMENT,
+id_ciudad INT,
+nombre VARCHAR(30) NOT NULL,
+direccion VARCHAR(30) NOT NULL,
+FOREIGN KEY fk_id_ciudad(id_ciudad) REFERENCES ciudades(id_ciudad)
+);
+
+INSERT INTO lugares VALUES
+	(NULL,1,'Hipodromo de San Isidro','Av. Bernabe Marquez 700'),
+    (NULL,5,'Parc del forum','Plaza del forum 1'),
+    (NULL,1,'Zozo Marine Stadium','Chiba 261-0022');
+    
+
+CREATE TABLE eventos(
+id_evento INT PRIMARY KEY AUTO_INCREMENT,
+id_lugar INT,
+nombre VARCHAR(30) NOT NULL,
+fecha DATE NOT NULL,
+FOREIGN KEY fk_id_lugar(id_lugar) REFERENCES lugares(id_lugar) 
+);
+
+INSERT INTO eventos VALUES
+	(NULL, 1,'Lollapalooza Argentina 2018','2018/03/17'),
+    (NULL, 2,'Primavera Sound 2019','2019/05/31'),
+    (NULL, 3,'Summer Sonic Tokyo 2018','2018/08/19');
+
+CREATE TABLE ingreso_setlist(
+id_mov_ingreso INT PRIMARY KEY AUTO_INCREMENT,
+id_listado INT,
+id_user INT,
+id_evento INT,
+id_cancion INT,
+num_orden INT NOT NULL,
+FOREIGN KEY fk_id_user(id_user) REFERENCES usuarios(id_user),
+FOREIGN KEY fk_id_evento(id_evento) REFERENCES eventos(id_evento),
+FOREIGN KEY fk_id_cancion(id_cancion) REFERENCES canciones(id_cancion)
+);
+
+/* A los efectos practicos, id_listado se encarga de asociar todo a un mismo evento. Y el num_orden determina el orden de las canciones. las demas
+filas son datos de otras tablas*/
+ 
+INSERT INTO ingreso_setlist VALUES
+	(NULL, 1,1,2,23,1),
+    (NULL, 1,1,2,3,2),
+    (NULL, 1,1,2,25,3),
+    (NULL, 1,1,2,15,4),
+    (NULL, 1,1,2,24,5),
+    (NULL, 1,1,2,19,6),
+    (NULL, 1,1,2,34,7),
+    (NULL, 1,1,2,29,8),
+    (NULL, 1,1,2,5,9),
+    (NULL, 1,1,2,27,10),
+    (NULL, 1,1,2,38,11),
+    (NULL, 1,1,2,14,12);
+    
+-- Creación de Vistas
+
+/* Listado de canciones de la decada del 10' */
+CREATE VIEW songs_10s
+AS (SELECT * FROM canciones WHERE anio_publicacion BETWEEN 2010 AND 2019);
+
+/* Duración de las canciones ordenadas desde la más larga a la más corta*/
+CREATE VIEW largest_canciones
+AS (SELECT * FROM canciones ORDER BY duracion DESC);
+
+/* Albumes recientes, listado de albumes ordenados por año de publicación*/
+CREATE VIEW new_albums
+AS (SELECT * FROM albumes ORDER BY anio_publicacion);
+
+/* Listado de discograficas australianas*/
+CREATE VIEW discograficas_australianas
+AS (SELECT * FROM discograficas WHERE nacionalidad = "Australiana");
+
+/* Listado de discograficas fundadas en la decada del 70' */
+CREATE VIEW discograficas_70s
+AS (SELECT * FROM discograficas WHERE anio_inicio BETWEEN 1970 AND 1979);
+
+-- Creacion de funciones
+
+delimiter #
+
+CREATE FUNCTION Q_ALBUM_X_ARTIST (PARAM_SONG INT)
+RETURNS INT
+DETERMINISTIC
+BEGIN
+	DECLARE ALBUMES_X_ARTISTA INT;
+    
+    SELECT COUNT(id_album) INTO ALBUMES_X_ARTISTA
+    FROM albumes
+    WHERE id_artista = PARAM_SONG AND id_genero = 1;
+    
+    RETURN ALBUMES_X_ARTISTA;
+END#
+
+delimiter ;
+
+-- Uso de la función para saber cuantos albumes del genero rock psicodelico tiene determinado artista.
+
+SELECT nombre, Q_ALBUM_X_ARTIST(1) AS 'Albumes de Psyrock'
+FROM artistas;
+
+delimiter #
+
+CREATE FUNCTION Canciones_largas (song INT)
+RETURNS VARCHAR(30)
+NO SQL
+BEGIN
+	DECLARE duracionsong TIME;
+    
+    SELECT duracion INTO duracionsong
+    FROM canciones
+    WHERE id_cancion = song;
+    
+    IF duracionsong > "00:05:00" THEN
+    RETURN 'LARGA';
+    ELSE
+    RETURN 'CORTA';
+    END IF;
+    
+END#
+
+delimiter ;
+
+-- Query para saber si una canción es demasiado larga. (más de 5 min)
+
+SELECT Canciones_largas (1);
+
+-- Creación de Stored Procedure:
+
+DELIMITER //
+
+CREATE PROCEDURE `SP_Canciones_Ordenadas` (IN nombre CHAR(50), orden INT)
+BEGIN
+
+	IF nombre <> '' AND orden = 2 THEN
+		SET @ordena = concat('ORDER BY ',nombre,' DESC');
+	ELSEIF nombre <> '' AND orden = 1 THEN
+		SET @ordena = concat('ORDER BY ',nombre,' ASC');
+	ELSE 
+		SET @ordena = '';
+	END IF;
+
+	SET @clausula = concat('SELECT * FROM canciones ', @ordena);
+    
+    PREPARE ejecutarSQL FROM @clausula;
+    EXECUTE ejecutarSQL;
+    DEALLOCATE PREPARE ejecutarSQL;
+    
+END //
+
+DELIMITER ;
+
+-- Query para su utilización: en el segundo parametro: 1 para orden ascendente, 2 para orden descendente
+
+CALL SP_Canciones_Ordenadas('id_cancion',2);
+
+DELIMITER //
+
+CREATE PROCEDURE `insertar_genero` (IN genero VARCHAR(50))
+BEGIN
+	SET @genre = genero;
+    INSERT INTO generos VALUES (NULL,@genre);
+END//
+
+DELIMITER ;
+-- Query para su utilizacion: Para insertar nuevo genero:
+CALL insertar_genero ('Cuarteto');
+
+-- Creacion de trigger para evitar que se llene mal un campo
+
+DELIMITER $$
+CREATE TRIGGER nombre_defecto
+BEFORE INSERT ON canciones
+FOR EACH ROW
+BEGIN
+	IF new.anio_publicacion >YEAR(curdate()) THEN
+		signal sqlstate '45000' SET MESSAGE_TEXT = 'El año debe ser de 2022 hacia atras';
+	END IF;
+END $$
+DELIMITER ;
+
+-- Ejemplo de prueba:
+
+INSERT INTO canciones VALUES (NULL,1,1,2023,'00:05:21','Crying Lightning');
+
+-- CREACIÓN DE USUARIOS
+
+-- Usuario1 Permisos solo de lectura sobre todas las tablas. No puede eliminar registros de ninguna tabla.
+
+-- 1) Se crea el usuario y su contraseña, por defecto no cuenta con ningun permiso
+
+CREATE USER 'Usuario1'@'localhost' IDENTIFIED BY 'Password1';
+
+-- 2) Con la sentencia GRANT se le otorga persmisos al usuario1 y especificamos la sentencia SELECT para que sean solo permisos de vista,
+-- sobre la base de datos 'setlist'
+
+GRANT SELECT ON setlist.* TO 'Usuario1'@'localhost';
+
+-- Usuario2 Permisos de Lectura, Insersión y Modificación de datos. NO puede eliminar registros de ninguna tabla.
+
+-- 1) Igual que el punto anterior, creamos un usuario nuevo con su contraseña:
+
+CREATE USER 'Usuario2'@'localhost' IDENTIFIED BY 'Password2';
+
+-- 2) Usamos la sentencia GRANT para otorgarle permisos y vamos a especificar cuales
+
+GRANT SELECT, INSERT, UPDATE ON setlist.* TO 'Usuario2'@'localhost';
+
+-- Sentencias para verificar sus permisos:
+
+SHOW GRANTS FOR 'Usuario1'@'localhost';
+SHOW GRANTS FOR 'Usuario2'@'localhost';
